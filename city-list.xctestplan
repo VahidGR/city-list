@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "E9816DC8-0DAF-46CB-9811-627283CF7E64",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:city-list.xcodeproj",
+      "identifier" : "C7060A9C2C47F09B009F39B6",
+      "name" : "city-list"
+    },
+    "threadSanitizerEnabled" : true,
+    "undefinedBehaviorSanitizerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:city-list.xcodeproj",
+        "identifier" : "C7060AAC2C47F09C009F39B6",
+        "name" : "city-listTests"
+      }
+    }
+  ],
+  "version" : 1
+}
