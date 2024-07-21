@@ -21,9 +21,6 @@ Specializes `AlgoComparable` for binary search algorithms.
 ### FilterComparable
 Specializes `AlgoComparable` for linear filtering algorithms.
 
-### BiAlgoComparable
-Combines `BinaryComparable` and `FilterComparable` to support multiple comparison methods.
-
 ### ListViewModel
 A protocol for view models managing lists of resources.
 
