@@ -10,9 +10,11 @@ import XCTest
 final class ResourceTests: XCTestCase {
     
     func testResourceSearch() {
-        let sut = MockedResource<
-            Tools.BinarySearch
-        >(organizer: Tools.standardLibrary(), explorer: Tools.binarySearch())
+        let sut = BinaryResource(
+            organizer: Tools.standardSort(),
+            explorer: Tools.binarySearch(SearchableText.self),
+            sortedArray: Dataset.search_large_dataset.map({ .init(wrapped: $0) })
+        )
         
         XCTAssertEqual(sut.list.count, 365)
         let a = sut.find("a")
@@ -31,9 +33,12 @@ final class ResourceTests: XCTestCase {
     }
     
     func testResourceFilter() {
-        let sut = Cities<
-            Tools.BinarySearch
-        >(organizer: Tools.standardLibrary(), explorer: Tools.binarySearch())
+        let sut = BinaryResource(
+            organizer: Tools.standardSort(),
+            explorer: Tools.binarySearch(CityModel.self),
+            fileName: "cities",
+            fileExtension: "json"
+        )
         
         XCTAssertEqual(sut.list.count, 209557)
         let a = sut.find("a")
@@ -53,8 +58,14 @@ final class ResourceTests: XCTestCase {
     
     func testCustomSearchAgainstStandardLibrary() throws {
         // given
-        let reference = Cities(organizer: Tools.standardLibrary(), explorer: Tools.standardLibrary())
-        let sut = Cities(organizer: Tools.standardLibrary(), explorer: Tools.binarySearch())
+        let reference = LinearResource(
+            organizer: Tools.standardSort(),
+            explorer: Tools.standardLibrary(CityModel.self)
+        )
+        let sut = BinaryResource(
+            organizer: Tools.standardSort(),
+            explorer: Tools.binarySearch(CityModel.self)
+        )
 
         
         for query in alphabet {

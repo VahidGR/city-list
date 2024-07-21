@@ -11,7 +11,7 @@ internal struct Features {
     
     static func SearchableList<Resource: SearchableResources>(
         resources: Resource
-    ) -> some View where Resource.Element: CellRepresentable {
+    ) -> some View where Resource.Element: CellRepresentable, Resource.Search.Element: Decodable {
         let viewModel = SearchableListViewModel.init(
             resources: resources
         )

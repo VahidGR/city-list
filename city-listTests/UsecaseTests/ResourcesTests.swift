@@ -11,48 +11,47 @@ import XCTest
 final class ResourcesTests: XCTestCase {
 
     func testReadFileSuccessfully() {
+        
+        let sut: LinearResource = .init(
+            organizer: Tools.standardSort(),
+            explorer: Tools.standardLibrary(CityModel.self),
+            fileName: "cities",
+            fileExtension: "json"
+        )
+        
         XCTAssertNoThrow(
-            try FileReaderMocked<
-            Tools.StandardLibrary,
-            CityModel<Tools.StandardLibrary.ComparisonResult>
-            >(
-                file: "cities",
-                withExtension: "json",
-                into: [CityModel<Tools.StandardLibrary.ComparisonResult>].self,
-                bundle: .main
-            )
+            try sut.read(file: "cities", withExtension: "json", into: [CityModel].self, bundle: .main)
         )
     }
     
     func testReadFileThatDoesNotExist() {
+        let sut: LinearResource = .init(
+            organizer: Tools.standardSort(),
+            explorer: Tools.standardLibrary(SearchableText.self),
+            fileName: "skyscrapers",
+            fileExtension: "json"
+        )
+        
         XCTAssertThrowsError(
-            try FileReaderMocked<
-            Tools.StandardLibrary,
-            SearchableText<Tools.StandardLibrary.ComparisonResult>
-            >(
-                file: "skyscrapers",
-                withExtension: "json",
-                into: [SearchableText<Tools.StandardLibrary.ComparisonResult>].self,
-                bundle: Bundle(for: ResourcesTests.self)
-            )
+            try sut.read(file: "skyscrapers", withExtension: "json", into: [SearchableText].self, bundle: .main)
         ) { exception in
             let error = exception as? LocalFileLoadingError
             XCTAssertNotNil(error)
             XCTAssertEqual(error, LocalFileLoadingError.didNotFindPath)
         }
+
     }
     
     func testReadFileWithFaultyDecoding() {
+        let sut: LinearResource = .init(
+            organizer: Tools.standardSort(),
+            explorer: Tools.standardLibrary(SearchableText.self),
+            fileName: "cities",
+            fileExtension: "json"
+        )
+        
         XCTAssertThrowsError(
-            try FileReaderMocked<
-            Tools.StandardLibrary,
-            SearchableText<Tools.StandardLibrary.ComparisonResult>
-            >(
-                file: "cities",
-                withExtension: "json",
-                into: [SearchableText<Tools.StandardLibrary.ComparisonResult>].self,
-                bundle: .main
-            )
+            try sut.read(file: "cities", withExtension: "json", into: [SearchableText].self, bundle: .main)
         ) { exception in
             let error = exception as? LocalFileLoadingError
             XCTAssertNotNil(error)

@@ -19,52 +19,112 @@ protocol Resources {
 }
 
 /// Based on ``Resources`` providing search capabilities through ``Explorer`` interface and ``find(_:)`` method
-protocol SearchableResources: Resources where Element: AlgoComparable {
+protocol SearchableResources: Resources {
     associatedtype Search: Explorer
     /// Searching interface
     var explorer: Search { get }
     /// Search method
-    func find(_ query: Element.Compared) -> Array<Element>
+    func find(_ query: Search.Element.Compared) -> Array<Element>
 }
-
-extension SearchableResources where Self.Element: BiAlgoComparable {
-    /// search through ``explorer``
-    func filter(
-        _ query: Element.Compared,
-        _ isIncluded: (Element) throws -> Self.Search.ComparisonResult
-    ) -> Array<Element> {
-        explorer.search(list, isIncluded)
-    }
-}
-
-/// All business logic related to ``CityModel``
-final class Cities<Search: Explorer>: SearchableResources {
-    typealias Element = CityModel<Search.ComparisonResult>
+/// Manages sort and search functionalities for  ``FilterComparable``
+final class LinearResource<Search: Explorer>: SearchableResources where Search.Element: FilterComparable, Search.ComparisonResult == Search.Element.ComparisonResult, Search.Element: Decodable {
     
-    func find(_ query: Element.Compared) -> Array<Element> {
-        self.filter(query) { element in
-            element.compare(against: query)
-        }
-    }
+    typealias Element = Search.Element
+    
     
     let organizer: Organizer
     let explorer: Search
     
-    init(organizer: Organizer, explorer: Search) {
+    private let fileName: String?
+    private let fileExtension: String?
+    private let sortedArray: [Element]
+    
+    
+    init(
+        organizer: Organizer,
+        explorer: Search,
+        sortedArray: [Element] = [],
+        fileName: String? = nil,
+        fileExtension: String? = nil
+    ) {
         self.organizer = organizer
         self.explorer = explorer
+        self.sortedArray = sortedArray
+        self.fileName = fileName
+        self.fileExtension = fileExtension
     }
     
-    private lazy var repository = try! read(
-        file: "cities",
-        withExtension: "json",
-        into: Collection.self,
-        bundle: .main
-    )
+    private lazy var repository = {
+        
+        if let fileName, let fileExtension {
+            return try! read(
+                file: fileName,
+                withExtension: fileExtension,
+                into: Collection.self,
+                bundle: .main
+            )
+        }
+        
+        return sortedArray
+    }()
+    lazy var list: [Element] = organizer.sorted(repository, by: <)
     
-    lazy var list: Array<Element> = organizer.sorted(repository, by: <)
+    func find(_ query: Element.Compared) -> Array<Element> {
+        explorer.search(list) { element in
+            element.filter(using: query)
+        }
+    }
 }
 
+/// Manages sort and search functionalities for  ``BinaryComparable``
+final class BinaryResource<Search: Explorer>: SearchableResources where Search.Element: Decodable, Search.Element: BinaryComparable, Search.ComparisonResult == Search.Element.ComparisonResult {
+    
+    typealias Element = Search.Element
+    
+    
+    let organizer: Organizer
+    let explorer: Search
+    
+    private let fileName: String?
+    private let fileExtension: String?
+    private let sortedArray: [Element]
+    
+    
+    init(
+        organizer: Organizer,
+        explorer: Search,
+        sortedArray: [Element] = [],
+        fileName: String? = nil,
+        fileExtension: String? = nil
+    ) {
+        self.organizer = organizer
+        self.explorer = explorer
+        self.sortedArray = sortedArray
+        self.fileName = fileName
+        self.fileExtension = fileExtension
+    }
+    
+    private lazy var repository = {
+        
+        if let fileName, let fileExtension {
+            return try! read(
+                file: fileName,
+                withExtension: fileExtension,
+                into: Collection.self,
+                bundle: .main
+            )
+        }
+        
+        return sortedArray
+    }()
+    lazy var list: [Element] = organizer.sorted(repository, by: <)
+    
+    func find(_ query: Element.Compared) -> Array<Element> {
+        explorer.search(list) { element in
+            element.direction(against: query)
+        }
+    }
+}
 
 extension Resources {
     /// Read local files within the project.

@@ -21,28 +21,28 @@ final class SearchTests: XCTestCase {
     
     func testCustomSearchAgainstStandardLibrary() throws {
         // given
-        let li_dataset: [SearchableText<Tools.StandardLibrary.ComparisonResult>] = Dataset
+        let li_dataset: [SearchableText] = Dataset
             .search_large_dataset
             .map({
                 .init(wrapped: $0)
             })
-        let bi_dataset: [SearchableText<Tools.BinarySearch.ComparisonResult>] = Dataset
+        let bi_dataset: [SearchableText] = Dataset
             .search_large_dataset
             .map({
                 .init(wrapped: $0)
             })
 
-        let reference = Tools.standardLibrary()
-        let sut = Tools.binarySearch()
+        let reference = Tools.standardLibrary(SearchableText.self)
+        let sut = Tools.binarySearch(SearchableText.self)
         
         
         for query in alphabet {
             let expected = reference.search(li_dataset) { element in
-                element.compare(against: query)
+                element.filter(using: query)
             }
                 .map({ $0.wrapped })
             let found = sut.search(bi_dataset) { element in
-                element.compare(against: query)
+                element.direction(against: query)
             }
                 .map({ $0.wrapped })
             XCTAssertEqual(expected, found)
@@ -50,34 +50,34 @@ final class SearchTests: XCTestCase {
     }
     
     func testStandardLibraryPerformance() {
-        let dataset: [SearchableText<Tools.StandardLibrary.ComparisonResult>] = Dataset
+        let dataset: [SearchableText] = Dataset
             .search_large_dataset
             .map({
                 .init(wrapped: $0)
             })
-        let sut = Tools.standardLibrary()
+        let sut = Tools.standardLibrary(SearchableText.self)
         
         self.measure(options: measureOptions) {
             for query in alphabet {
                 let _ = sut.search(dataset) { element in
-                    element.compare(against: query)
+                    element.filter(using: query)
                 }
             }
         }
     }
     
     func testBinarySearchPerformance() {
-        let dataset: [SearchableText<Tools.BinarySearch.ComparisonResult>] = Dataset
+        let dataset: [SearchableText] = Dataset
             .search_large_dataset
             .map({
                 .init(wrapped: $0)
             })
-        let sut = Tools.binarySearch()
+        let sut = Tools.binarySearch(SearchableText.self)
         
         self.measure(options: measureOptions) {
             for query in alphabet {
                 let _ = sut.search(dataset) { element in
-                    element.compare(against: query)
+                    element.direction(against: query)
                 }
             }
         }

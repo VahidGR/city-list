@@ -9,14 +9,26 @@ import Foundation
 
 extension Tools {
     /// Implementation of ``Organizer`` and ``Explorer`` intefaces using `Swift` `StandardLibrary`
-    static func standardLibrary() -> StandardLibrary {
-        StandardLibrary()
+    static func standardLibrary<Model: FilterComparable>(_ type: Model.Type) -> StandardLibrary<Model> {
+        StandardLibrary<Model>()
+    }
+    static func standardSort() -> Organizer {
+        StandardSort()
     }
 }
 
 extension Tools {
-    struct StandardLibrary: Organizer, Explorer {
+    struct StandardLibrary<Element: FilterComparable>: Explorer {
         typealias ComparisonResult = Bool
+        
+        fileprivate init() { }
+        
+        func search(_ sequence: Array<Element>, _ isIncluded: (Element) throws -> ComparisonResult) -> Array<Element> {
+            (try? sequence.filter(isIncluded)) ?? []
+        }
+    }
+    
+    struct StandardSort: Organizer {
         
         fileprivate init() { }
         
@@ -25,13 +37,6 @@ extension Tools {
             by areInIncreasingOrder: (Collection.Element, Collection.Element) throws -> Bool
         ) rethrows -> Array<Collection.Element> where Collection : RandomAccessCollection {
             try collection.sorted(by: areInIncreasingOrder)
-        }
-        
-        func search<Element: BiAlgoComparable>(
-            _ sequence: Array<Element>,
-            _ isIncluded: (Element) throws -> ComparisonResult
-        ) -> Array<Element> {
-            (try? sequence.filter(isIncluded)) ?? []
         }
     }
 }

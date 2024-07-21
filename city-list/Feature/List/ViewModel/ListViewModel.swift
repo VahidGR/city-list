@@ -25,7 +25,7 @@ protocol ListViewModel: ObservableObject {
 
 /// Enforcing searchability using ``SearchableResources`` and adding ``find(_:)`` method to search
 /// based on resource's specific implementation
-protocol SearchableViewModel: ListViewModel where Self.Resource: SearchableResources {
+protocol SearchableViewModel: ListViewModel {
     /// Filter a range within `Array<Resource.Element>`
     /// - Returns: `Array<Resource.Element>`
     @discardableResult func find(_ query: String) -> [Resource.Element]
@@ -33,13 +33,13 @@ protocol SearchableViewModel: ListViewModel where Self.Resource: SearchableResou
 
 /// An implementation of ``SearchableViewModel`` implementing ``find(_:)`` method.
 /// Providing access to an implemtation of ``SearchableResources``
-internal final class SearchableListViewModel<Resource: SearchableResources>: PlainListViewModel<Resource>, SearchableViewModel {
+internal final class SearchableListViewModel<Resource: SearchableResources>: PlainListViewModel<Resource>, SearchableViewModel where Resource.Search.Element: Decodable {
     @discardableResult func find(_ query: String) -> [Resource.Element] {
         let result: [Resource.Element]
         defer {
             self.list = result
         }
-        guard let query = query as? Resource.Element.Compared
+        guard let query = query as? Resource.Search.Element.Compared
         else {
             assertionFailure("Assuming query is sent by `View`, cast `query` properly to `Resource.Element.Compared`")
             result = []

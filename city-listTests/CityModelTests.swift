@@ -10,7 +10,7 @@ import XCTest
 final class CityModelTests: XCTestCase {
     
     func testCompareBinary() {
-        let sut: CityModel<BinaryComaparison> = .init(
+        let sut: CityModel = .init(
             country: "Iran",
             city: "Tehran",
             id: 1,
@@ -20,11 +20,11 @@ final class CityModelTests: XCTestCase {
             )
         )
         
-        XCTAssertEqual(sut.compare(against: "te"), .left)
+        XCTAssertEqual(sut.direction(against: "te"), .left)
     }
     
     func testCompareLinear() {
-        let sut: CityModel<Bool> = .init(
+        let sut: CityModel = .init(
             country: "Iran",
             city: "Tehran",
             id: 1,
@@ -34,7 +34,7 @@ final class CityModelTests: XCTestCase {
             )
         )
         
-        XCTAssertEqual(sut.compare(against: "te"), false)
+        XCTAssertEqual(sut.filter(using: "te"), false)
     }
     
 }

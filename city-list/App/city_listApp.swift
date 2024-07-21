@@ -19,7 +19,12 @@ struct city_listApp: App {
 
 fileprivate struct AppMainScreen: View {
     
-    let resources = Cities(organizer: Tools.standardLibrary(), explorer: Tools.binarySearch())
+    let resources = BinaryResource(
+        organizer: Tools.standardSort(),
+        explorer: Tools.binarySearch(CityModel.self),
+        fileName: "cities",
+        fileExtension: "json"
+    )
     
     var body: some View {
         Features.SearchableList(resources: resources)

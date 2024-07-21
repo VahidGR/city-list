@@ -19,15 +19,16 @@ internal protocol Organizer {
     ) rethrows -> Array<Collection.Element>
 }
 
-/// Search interface accepting `Array<Element>` input where `Element` conforms to ``BiAlgoComparable``
-/// - Parameters: `sequence: Array<BiAlgoComparable>`
-/// - `isIncluded: (BiAlgoComparable) throws -> ComparisonResult`
+/// Search interface accepting `Array<Element>` input where `Element` conforms to ``AlgoComparable``
+/// - Parameters: `sequence: Array<AlgoComparable>`
+/// - `isIncluded: (AlgoComparable) throws -> ComparisonResult`
 /// - Returns: `Array<Element>`
 internal protocol Explorer {
     /// Dictates how ``search(_:_:)``'s Elements are matched
+    associatedtype Element: AlgoComparable
     associatedtype ComparisonResult
-    /// Shared interface method for searching algorithms. Check out ``BiAlgoComparable``
-    func search<Element: BiAlgoComparable>(
+    /// Shared interface method for searching algorithms. Check out ``AlgoComparable``
+    func search(
         _ sequence: Array<Element>,
         _ isIncluded: (Element) throws -> ComparisonResult
     ) -> Array<Element>
@@ -37,6 +38,7 @@ internal protocol Explorer {
 /// Enforcing ``Compared`` conforming to `Comparable` dictating the way two elements are compared.
 /// Implementation is simillar to `Equatable` but not quite.
 protocol AlgoComparable: Comparable {
+    /// Dictates ``compare(against:)``'s output which is fed to ``Explorer``'s `search(_:, _:)`
     /// Dictating the way two elements are compared
     associatedtype Compared: Comparable
 }
@@ -44,6 +46,8 @@ protocol AlgoComparable: Comparable {
 /// Comparison method used for binary search algorithms
 /// Conforming to ``AlgoComparable``
 protocol BinaryComparable: AlgoComparable {
+    /// Divide and conquer match making decision.
+    typealias ComparisonResult = BinaryComaparison
     /// Decide whether a comparison is a `match` or its travelling direction in a Divide and conquer algorithm.
     func direction(against reference: Compared) -> BinaryComaparison
 }
@@ -51,20 +55,10 @@ protocol BinaryComparable: AlgoComparable {
 /// Comparison method used for linear algorithms like `StandardLibrary`'s `filter(_:) rethrows -> [Element]`
 /// Conforming to ``AlgoComparable``
 protocol FilterComparable: AlgoComparable {
+    /// Linear match making decision.
+    typealias ComparisonResult = Bool
     /// Decide the way a comparison is a `match`
     func filter(using reference: Compared) -> Bool
-}
-
-/// Enforcing ``ComparisonResult`` to get comparison method off of search algorithm implementation
-/// Example:
-/// - ``BinaryComaparison`` for `BinarySearch`
-/// - `Bool` for `StandardLibrary`
-/// and is open to extend if other algorithms are introduced into the system with different comparison method requirements
-protocol BiAlgoComparable: AlgoComparable where Self: FilterComparable & BinaryComparable {
-    /// Dictates ``compare(against:)``'s output which is fed to ``Explorer``'s `search(_:, _:)`
-    associatedtype ComparisonResult
-    /// Check all implemntations of `Comparable` methods. Currently supporing ``FilterComparable`` and ``BinaryComparable``
-    func compare(against reference: Compared) -> ComparisonResult
 }
 
 /// Tools factory

@@ -9,8 +9,8 @@ import Foundation
 
 extension Tools {
     /// A divide and conquer algorithm best used for sorted arrays
-    static func binarySearch() -> BinarySearch {
-        BinarySearch()
+    static func binarySearch<Model: BinaryComparable>(_ type: Model.Type) -> BinarySearch<Model> {
+        BinarySearch<Model>()
     }
 }
 
@@ -18,13 +18,12 @@ extension Tools {
     /// A combination of two binary search methods to find the first and last matching indexes, slicing the array between these two in order to filter conditioned search in oppose to `StandardLibrary`'s `filter(_:)` method
     /// - Best practice: use with sorted arrays
     /// - Also see: `https://en.wikipedia.org/wiki/Binary_search#Algorithm`
-    struct BinarySearch: Explorer {
-        
+    struct BinarySearch<Element: BinaryComparable>: Explorer {
         typealias ComparisonResult = BinaryComaparison
         
         fileprivate init() { }
         
-        func search<Element: BiAlgoComparable>(
+        func search(
             _ sequence: Array<Element>,
             _ isIncluded: (Element) throws -> ComparisonResult
         ) -> Array<Element> {
@@ -53,7 +52,7 @@ extension Tools {
             return Array(sequence[lowerBound...upperBound])
         }
         
-        private func binarySearchBound<Element: BiAlgoComparable>(
+        private func binarySearchBound(
             _ sequence: Array<Element>,
             compare: (Element) -> ComparisonResult,
             left: Int,

@@ -9,7 +9,7 @@ import Foundation
 
 /// Data representation `Model` for `City` with its generic dependency `ComparisonResult`
 /// deciding which algorithm to use when using as an imput for ``Explorer``
-struct CityModel<ComparisonResult>: Decodable, Identifiable {
+struct CityModel: Decodable, Identifiable {
     
     let country: String
     let city: String
@@ -57,15 +57,6 @@ struct CityModel<ComparisonResult>: Decodable, Identifiable {
         case coordinates = "coord"
     }
     
-    func compare(against reference: String) -> ComparisonResult {
-        let linear = filter(using: reference) as? ComparisonResult
-        let binary = direction(against: reference) as? ComparisonResult
-        guard let comparison = linear ?? binary else {
-            fatalError("Comparison is supported only by linear and binary algorthyms")
-        }
-        return comparison
-    }
-    
     init(
         country: String,
         city: String,
@@ -92,7 +83,7 @@ extension CityModel: CellRepresentable {
 }
 
 extension CityModel: BinaryComparable {
-    func direction(against reference: Compared) -> BinaryComaparison {
+    func direction(against reference: String) -> BinaryComaparison {
         if city.starts(with: reference) {
             return .match
         }
@@ -109,7 +100,7 @@ extension CityModel: FilterComparable {
     }
 }
 
-extension CityModel: BiAlgoComparable {
+extension CityModel: Comparable {
     typealias Compared = String
     
     static func == (lhs: CityModel, rhs: CityModel) -> Bool {

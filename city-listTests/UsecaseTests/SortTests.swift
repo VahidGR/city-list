@@ -12,7 +12,7 @@ final class SortTests: XCTestCase {
     
     func testStandardLibrary() {
         // given
-        let sut: Organizer = Tools.standardLibrary()
+        let sut: Organizer = Tools.standardSort()
         let dataset = Dataset.sort_dataset_1
         // when
         let output = sut.sorted(dataset.input, by: { $0 < $1 })

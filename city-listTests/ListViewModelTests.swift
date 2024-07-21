@@ -10,17 +10,15 @@ import XCTest
 
 final class ListViewModelTests: XCTestCase {
     
-    private let reference_resource = MockedResource<
-        Tools.StandardLibrary
-    >(
-        organizer: Tools.standardLibrary(),
-        explorer: Tools.standardLibrary()
+    private let reference_resource = LinearResource(
+        organizer: Tools.standardSort(),
+        explorer: Tools.standardLibrary(SearchableText.self),
+        sortedArray: Dataset.search_large_dataset.map({ .init(wrapped: $0) })
     )
-    private let sut_resource = MockedResource<
-        Tools.BinarySearch
-    >(
-        organizer: Tools.standardLibrary(),
-        explorer: Tools.binarySearch()
+    private let sut_resource = BinaryResource(
+        organizer: Tools.standardSort(),
+        explorer: Tools.binarySearch(SearchableText.self),
+        sortedArray: Dataset.search_large_dataset.map({ .init(wrapped: $0) })
     )
     private let metricts: [XCTMetric] = [XCTMemoryMetric(), XCTStorageMetric(), XCTClockMetric()]
     
