@@ -9,7 +9,7 @@ import Foundation
 
 /// A blueprint for a resource to contain a ``list`` and be able to `sort` it using ``Organizer``.
 /// Is able to read local files, just like `cities.json` provided in the assignment description.
-protocol Resources {
+protocol Resources: AnyObject {
     associatedtype Element: Comparable
     typealias Collection = Array<Element>
     /// Sorting interface
