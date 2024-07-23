@@ -9,7 +9,14 @@ import XCTest
 @testable import city_list
 
 final class ResourcesTests: XCTestCase {
-
+    
+    private weak var sut: (any SearchableResources)!
+    
+    override func tearDown() {
+        XCTAssertNil(sut)
+        super.tearDown()
+    }
+    
     func testReadFileSuccessfully() {
         
         let sut: LinearResource = .init(
@@ -22,6 +29,8 @@ final class ResourcesTests: XCTestCase {
         XCTAssertNoThrow(
             try sut.read(file: "cities", withExtension: "json", into: [CityModel].self, bundle: .main)
         )
+        
+        self.sut = sut
     }
     
     func testReadFileThatDoesNotExist() {
@@ -39,7 +48,8 @@ final class ResourcesTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertEqual(error, LocalFileLoadingError.didNotFindPath)
         }
-
+        
+        self.sut = sut
     }
     
     func testReadFileWithFaultyDecoding() {
@@ -57,6 +67,8 @@ final class ResourcesTests: XCTestCase {
             XCTAssertNotNil(error)
             XCTAssertEqual(error, LocalFileLoadingError.failedToRead)
         }
+        
+        self.sut = sut
     }
     
 }
