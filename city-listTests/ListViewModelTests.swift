@@ -10,26 +10,26 @@ import XCTest
 
 final class ListViewModelTests: XCTestCase {
     
-    private weak var reference_resource: (any SearchableResources)!
-    private weak var sut_resource: (any SearchableResources)!
+    private weak var resource: (any SearchableResources)!
+    private weak var sut: (any SearchableViewModel)!
     private let metricts: [XCTMetric] = [XCTMemoryMetric(), XCTStorageMetric(), XCTClockMetric()]
     
     override func tearDown() {
-        XCTAssertNil(reference_resource)
-        XCTAssertNil(sut_resource)
+        XCTAssertNil(resource)
+        XCTAssertNil(sut)
         super.tearDown()
     }
     
     func testSearch() {
         
-        let reference_resource = LinearResource(
+        let resource = LinearResource(
             organizer: Tools.standardSort(),
             explorer: Tools.standardLibrary(SearchableText.self),
             sortedArray: Dataset.search_large_dataset.map({ .init(wrapped: $0) })
         )
         
         let sut = SearchableListViewModel(
-            resources: reference_resource
+            resources: resource
         )
         sut.viewDidAppear()
         
@@ -47,19 +47,20 @@ final class ListViewModelTests: XCTestCase {
         let list = sut.find("")
         XCTAssertEqual(list.count, 365)
         
-        self.reference_resource = reference_resource
+        self.resource = resource
+        self.sut = sut
     }
     
     func testSearch_binarySearch() {
         
-        let sut_resource = BinaryResource(
+        let resource = BinaryResource(
             organizer: Tools.standardSort(),
             explorer: Tools.binarySearch(SearchableText.self),
             sortedArray: Dataset.search_large_dataset.map({ .init(wrapped: $0) })
         )
         
         let sut = SearchableListViewModel(
-            resources: sut_resource
+            resources: resource
         )
         sut.viewDidAppear()
         
@@ -77,6 +78,7 @@ final class ListViewModelTests: XCTestCase {
         let list = sut.find("")
         XCTAssertEqual(list.count, 365)
         
-        self.sut_resource = sut_resource
+        self.resource = resource
+        self.sut = sut
     }
 }
