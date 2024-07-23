@@ -20,14 +20,7 @@ final class ListViewModelTests: XCTestCase {
         super.tearDown()
     }
     
-    private lazy var measureOptions: XCTMeasureOptions = {
-        let measureOptions: XCTMeasureOptions = .default
-        measureOptions.iterationCount = 1
-        
-        return measureOptions
-    }()
-    
-    func testLoadAndSearchTime_standardLibrary() {
+    func testSearch() {
         
         let reference_resource = LinearResource(
             organizer: Tools.standardSort(),
@@ -57,7 +50,7 @@ final class ListViewModelTests: XCTestCase {
         self.reference_resource = reference_resource
     }
     
-    func testLoadAndSearchTime_binarySearch() {
+    func testSearch_binarySearch() {
         
         let sut_resource = BinaryResource(
             organizer: Tools.standardSort(),
