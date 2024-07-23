@@ -8,7 +8,7 @@
 import XCTest
 @testable import city_list
 
-final class ResourcesTests: XCTestCase {
+final class ResourcesTests_read: XCTestCase {
     
     private weak var sut: (any SearchableResources)!
     

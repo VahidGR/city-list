@@ -7,7 +7,16 @@
 
 import XCTest
 
-final class ResourceTests: XCTestCase {
+final class ResourcesTests_find: XCTestCase {
+    
+    private weak var sut: (any SearchableResources)!
+    private weak var reference: (any SearchableResources)!
+    
+    override func tearDown() {
+        XCTAssertNil(reference)
+        XCTAssertNil(sut)
+        super.tearDown()
+    }
     
     func testResourceSearch() {
         let sut = BinaryResource(
@@ -30,6 +39,7 @@ final class ResourceTests: XCTestCase {
         let list = sut.find("")
         XCTAssertEqual(list.count, 365)
 
+        self.sut = sut
     }
     
     func testResourceFilter() {
@@ -54,6 +64,7 @@ final class ResourceTests: XCTestCase {
         let list = sut.find("")
         XCTAssertEqual(list.count, 209557)
 
+        self.sut = sut
     }
     
     func testCustomSearchAgainstStandardLibrary() throws {
@@ -77,5 +88,8 @@ final class ResourceTests: XCTestCase {
             // then
             XCTAssertEqual(expected, found)
         }
+        
+        self.reference = reference
+        self.sut = sut
     }
 }
