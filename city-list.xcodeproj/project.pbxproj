@@ -18,7 +18,7 @@
 		C7060AE02C4807F0009F39B6 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7060ADF2C4807F0009F39B6 /* ListViewModel.swift */; };
 		C7060AE82C481189009F39B6 /* cities.json in Resources */ = {isa = PBXBuildFile; fileRef = C7060AE72C481189009F39B6 /* cities.json */; };
 		C7060AEA2C4811CE009F39B6 /* CityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7060AE92C4811CE009F39B6 /* CityModel.swift */; };
-		C73878892C4A67730047C4C9 /* ResourcesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73878882C4A67730047C4C9 /* ResourcesTests.swift */; };
+		C73878892C4A67730047C4C9 /* ResourcesTests+read.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73878882C4A67730047C4C9 /* ResourcesTests+read.swift */; };
 		C761FECC2C4C2B25006A21BF /* BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FECB2C4C2B25006A21BF /* BinarySearch.swift */; };
 		C761FECD2C4C2B25006A21BF /* BinarySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FECB2C4C2B25006A21BF /* BinarySearch.swift */; };
 		C761FED22C4C2B81006A21BF /* StandardLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FED12C4C2B81006A21BF /* StandardLibrary.swift */; };
@@ -27,7 +27,7 @@
 		C761FEDD2C4C2C64006A21BF /* BinaryComaparison.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FEDB2C4C2C64006A21BF /* BinaryComaparison.swift */; };
 		C761FEE02C4C2D74006A21BF /* CellRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FEDF2C4C2D74006A21BF /* CellRepresentable.swift */; };
 		C761FEE12C4C2D74006A21BF /* CellRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FEDF2C4C2D74006A21BF /* CellRepresentable.swift */; };
-		C761FEE42C4C6720006A21BF /* ResourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FEE32C4C6720006A21BF /* ResourceTests.swift */; };
+		C761FEE42C4C6720006A21BF /* ResourcesTests+find.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FEE32C4C6720006A21BF /* ResourcesTests+find.swift */; };
 		C761FEE62C4C6F60006A21BF /* CityModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C761FEE52C4C6F60006A21BF /* CityModelTests.swift */; };
 		C78CB7A22C4867B300D9051B /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7060ADF2C4807F0009F39B6 /* ListViewModel.swift */; };
 		C78CB7A32C4867C300D9051B /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7060ACC2C47F129009F39B6 /* Tools.swift */; };
@@ -62,12 +62,12 @@
 		C7060ADF2C4807F0009F39B6 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		C7060AE72C481189009F39B6 /* cities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cities.json; sourceTree = "<group>"; };
 		C7060AE92C4811CE009F39B6 /* CityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityModel.swift; sourceTree = "<group>"; };
-		C73878882C4A67730047C4C9 /* ResourcesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesTests.swift; sourceTree = "<group>"; };
+		C73878882C4A67730047C4C9 /* ResourcesTests+read.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ResourcesTests+read.swift"; sourceTree = "<group>"; };
 		C761FECB2C4C2B25006A21BF /* BinarySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinarySearch.swift; sourceTree = "<group>"; };
 		C761FED12C4C2B81006A21BF /* StandardLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardLibrary.swift; sourceTree = "<group>"; };
 		C761FEDB2C4C2C64006A21BF /* BinaryComaparison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryComaparison.swift; sourceTree = "<group>"; };
 		C761FEDF2C4C2D74006A21BF /* CellRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellRepresentable.swift; sourceTree = "<group>"; };
-		C761FEE32C4C6720006A21BF /* ResourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceTests.swift; sourceTree = "<group>"; };
+		C761FEE32C4C6720006A21BF /* ResourcesTests+find.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ResourcesTests+find.swift"; sourceTree = "<group>"; };
 		C761FEE52C4C6F60006A21BF /* CityModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityModelTests.swift; sourceTree = "<group>"; };
 		C761FEE72C4C7D5A006A21BF /* city-list.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "city-list.xctestplan"; sourceTree = "<group>"; };
 		C78CB7AA2C48700900D9051B /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
@@ -234,9 +234,9 @@
 			isa = PBXGroup;
 			children = (
 				C7060ACE2C47F57D009F39B6 /* SortTests.swift */,
-				C761FEE32C4C6720006A21BF /* ResourceTests.swift */,
 				C78CB7B22C4924EC00D9051B /* SearchTests.swift */,
-				C73878882C4A67730047C4C9 /* ResourcesTests.swift */,
+				C761FEE32C4C6720006A21BF /* ResourcesTests+find.swift */,
+				C73878882C4A67730047C4C9 /* ResourcesTests+read.swift */,
 			);
 			path = UsecaseTests;
 			sourceTree = "<group>";
@@ -403,13 +403,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7060AB22C47F09C009F39B6 /* Mock+Dataset.swift in Sources */,
-				C761FEE42C4C6720006A21BF /* ResourceTests.swift in Sources */,
+				C761FEE42C4C6720006A21BF /* ResourcesTests+find.swift in Sources */,
 				C78CB7AC2C48702000D9051B /* Resources.swift in Sources */,
 				C7060ACF2C47F57D009F39B6 /* SortTests.swift in Sources */,
 				C761FEE62C4C6F60006A21BF /* CityModelTests.swift in Sources */,
 				C761FECD2C4C2B25006A21BF /* BinarySearch.swift in Sources */,
 				C761FEE12C4C2D74006A21BF /* CellRepresentable.swift in Sources */,
-				C73878892C4A67730047C4C9 /* ResourcesTests.swift in Sources */,
+				C73878892C4A67730047C4C9 /* ResourcesTests+read.swift in Sources */,
 				C761FED32C4C2B81006A21BF /* StandardLibrary.swift in Sources */,
 				C78CB7B32C4924EC00D9051B /* SearchTests.swift in Sources */,
 				C78CB7A22C4867B300D9051B /* ListViewModel.swift in Sources */,
