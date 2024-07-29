@@ -92,4 +92,62 @@ final class ResourcesTests_find: XCTestCase {
         self.reference = reference
         self.sut = sut
     }
+	
+	func testSortCityByID() {
+		let sut = BinaryResource(
+			organizer: Tools.sortableByKeys(),
+			explorer: Tools.binarySearch(
+				CityModel.self
+			),
+			fileName: "cities",
+			fileExtension: "json"
+		)
+		
+		let sortedReference = Tools.standardSort().sorted(sut.list) { lhs, rhs in
+			lhs.id < rhs.id
+		}
+		
+		let target: Int = 4099679
+		
+		let output = sut.find(.init(target), forKey: .id)
+		
+		let expected = sortedReference.filter { element in
+			element.id >= target
+		}
+		
+		XCTAssertEqual(output, expected)
+		
+		for item in output {
+			XCTAssertTrue(target <= item.id)
+		}
+	}
+	
+	func testSortCityByCoordinates() {
+		let sut = BinaryResource(
+			organizer: Tools.sortableByKeys(),
+			explorer: Tools.binarySearch(
+				CityModel.self
+			),
+			fileName: "cities",
+			fileExtension: "json"
+		)
+		
+		let target: CityModel.Coordinates = .init(longitude: 10, latitude: -10)
+		
+		let output = sut.find("10, -10", forKey: .coordinates)
+		
+		let sortedReference = Tools.standardSort().sorted(sut.list) { lhs, rhs in
+			lhs.id < rhs.id
+		}
+		
+		let reference = sortedReference.filter { element in
+			element.coordinates >= target
+		}
+		
+		XCTAssertEqual(output, reference)
+		
+		for item in output {
+			XCTAssertTrue(target <= item.coordinates)
+		}
+	}
 }

@@ -12,8 +12,9 @@ import Foundation
 protocol Resources: AnyObject {
     associatedtype Element: Comparable
     typealias Collection = Array<Element>
+	associatedtype Sort: Organizer
     /// Sorting interface
-    var organizer: Organizer { get }
+    var organizer: Sort { get }
     /// Best practice is to implement ``list`` as a `lazy` property and sort is using  ``Organizer``.
     var list: Array<Element> { get set }
 }
@@ -27,12 +28,12 @@ protocol SearchableResources: Resources {
     func find(_ query: Search.Element.Compared) -> Array<Element>
 }
 /// Manages sort and search functionalities for  ``FilterComparable``
-final class LinearResource<Search: Explorer>: SearchableResources where Search.Element: FilterComparable, Search.ComparisonResult == Search.Element.ComparisonResult, Search.Element: Decodable {
+final class LinearResource<Sort: Organizer, Search: Explorer>: SearchableResources where Search.Element: FilterComparable, Search.ComparisonResult == Search.Element.ComparisonResult, Search.Element: Decodable {
     
     typealias Element = Search.Element
     
     
-    let organizer: Organizer
+    let organizer: Sort
     let explorer: Search
     
     private let fileName: String?
@@ -41,7 +42,7 @@ final class LinearResource<Search: Explorer>: SearchableResources where Search.E
     
     
     init(
-        organizer: Organizer,
+        organizer: Sort,
         explorer: Search,
         sortedArray: [Element] = [],
         fileName: String? = nil,
@@ -76,13 +77,17 @@ final class LinearResource<Search: Explorer>: SearchableResources where Search.E
     }
 }
 
+protocol DecodableByKey: Decodable {
+	associatedtype CodingKeys: CodingKey
+}
+
 /// Manages sort and search functionalities for  ``BinaryComparable``
-final class BinaryResource<Search: Explorer>: SearchableResources where Search.Element: Decodable, Search.Element: BinaryComparable, Search.ComparisonResult == Search.Element.ComparisonResult {
+final class BinaryResource<Sort: Organizer, Search: Explorer>: SearchableResources where Search.Element: Decodable, Search.Element: BinaryComparable, Search.ComparisonResult == Search.Element.ComparisonResult {
     
     typealias Element = Search.Element
     
     
-    let organizer: Organizer
+    let organizer: Sort
     let explorer: Search
     
     private let fileName: String?
@@ -91,7 +96,7 @@ final class BinaryResource<Search: Explorer>: SearchableResources where Search.E
     
     
     init(
-        organizer: Organizer,
+        organizer: Sort,
         explorer: Search,
         sortedArray: [Element] = [],
         fileName: String? = nil,
@@ -124,6 +129,20 @@ final class BinaryResource<Search: Explorer>: SearchableResources where Search.E
             element.direction(against: query)
         }
     }
+}
+
+extension BinaryResource where Search.Element: DecodableBinaryComparable, Search.Element: CodedComparable, Sort: DecodableOrganizer {
+	
+	func find(_ query: String, forKey key: Search.Element.CodingKeys) -> Array<Element> {
+		let list = organizer.sorted(repository, forKey: key) { lhs, rhs in
+			lhs.compare(against: rhs, withKey: key, by: <)
+		}
+		
+		return explorer.search(list) { element in
+			element.direction(against: query, forKey: key)
+		}
+	}
+	
 }
 
 extension Resources {

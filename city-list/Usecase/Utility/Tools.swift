@@ -19,6 +19,14 @@ internal protocol Organizer {
     ) rethrows -> Array<Collection.Element>
 }
 
+internal protocol DecodableOrganizer {
+	func sorted<Element: CodedComparable>(
+        _ collection: Array<Element>,
+		forKey key: Element.CodingKeys,
+        by areInIncreasingOrder: (Element, Element) throws -> Bool
+	) rethrows -> Array<Element>
+}
+
 /// Search interface accepting `Array<Element>` input where `Element` conforms to ``AlgoComparable``
 /// - Parameters: `sequence: Array<AlgoComparable>`
 /// - `isIncluded: (AlgoComparable) throws -> ComparisonResult`
@@ -52,6 +60,13 @@ protocol BinaryComparable: AlgoComparable {
     func direction(against reference: Compared) -> BinaryComaparison
 }
 
+/// Comparison method used for binary search algorithms for  collections with``DecodableByKey`` elements
+/// Conforming to ``DecodableBinaryComparable``
+protocol DecodableBinaryComparable: BinaryComparable, DecodableByKey {
+	/// Decide whether a comparison is a `match` or its travelling direction in a Divide and conquer algorithm.
+	func direction(against reference: String, forKey key: CodingKeys) -> BinaryComaparison
+}
+
 /// Comparison method used for linear algorithms like `StandardLibrary`'s `filter(_:) rethrows -> [Element]`
 /// Conforming to ``AlgoComparable``
 protocol FilterComparable: AlgoComparable {
@@ -59,6 +74,10 @@ protocol FilterComparable: AlgoComparable {
     typealias ComparisonResult = Bool
     /// Decide the way a comparison is a `match`
     func filter(using reference: Compared) -> Bool
+}
+
+protocol CodedComparable: DecodableByKey {
+	func compare(against reference: Self, withKey key: CodingKeys, by areInIncreasingOrder: (Self, Self) throws -> Bool) -> Bool
 }
 
 /// Tools factory
