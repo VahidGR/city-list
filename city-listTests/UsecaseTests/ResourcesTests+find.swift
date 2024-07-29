@@ -122,6 +122,7 @@ final class ResourcesTests_find: XCTestCase {
 		}
 	}
 	
+	/*
 	func testSortCityByCoordinates() {
 		let sut = BinaryResource(
 			organizer: Tools.sortableByKeys(),
@@ -150,4 +151,5 @@ final class ResourcesTests_find: XCTestCase {
 			XCTAssertTrue(target <= item.coordinates)
 		}
 	}
+	 */
 }

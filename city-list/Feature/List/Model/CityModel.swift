@@ -181,32 +181,13 @@ extension String: BinaryComparable {
 
 extension CityModel.Coordinates: BinaryComparable {
 	func direction(against reference: Self) -> BinaryComaparison {
-		let lhs = self
-		let rhs = reference
-		
-		
-		
-		
-		
 		if self >= reference {
 			return .match
 		}
 		return .left
-		
-//		if self == reference {
-//			return .match
-//		}
-//		if self < reference {
-//			return .left
-//		}
-//		return .right
 	}
 	
 	typealias Compared = Self
-	
-	func distance(to location: Self) -> Double {
-		
-	}
 	
 	static func < (lhs: Self, rhs: Self) -> Bool {
 		lhs.longitude < rhs.longitude && lhs.latitude < rhs.latitude
